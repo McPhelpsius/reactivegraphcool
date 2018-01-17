@@ -22,5 +22,16 @@ const httpLink = new HttpLink({
   uri: 'https://api.graph.cool/simple/v1/cjci9sl0w0kpx0159x5bwgzzg'
 });
 
+const link = split(
+  ({query}) => {
+    const {kind, operation} = getMainDefinition(query);
+    return kind === 'Operation Definition' && operation === 'subscription';
+  },
+  wsLink,
+  httpLink
+);
+
+const client 
+
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
