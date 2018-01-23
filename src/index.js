@@ -7,7 +7,7 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloLink, split } from 'apollo-client-preset';
+import { split } from 'apollo-client-preset';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
@@ -23,15 +23,23 @@ const httpLink = new HttpLink({
 });
 
 const link = split(
-  ({query}) => {
-    const {kind, operation} = getMainDefinition(query);
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query);
     return kind === 'Operation Definition' && operation === 'subscription';
   },
   wsLink,
   httpLink
 );
 
-const client 
+const client = new ApolloClient({
+  link,
+  cache: new InMemoryCache()
+});
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById('root')
+);
 registerServiceWorker();
