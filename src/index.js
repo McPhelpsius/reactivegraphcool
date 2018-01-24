@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
@@ -25,7 +26,7 @@ const httpLink = new HttpLink({
 const link = split(
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
-    return kind === 'Operation Definition' && operation === 'subscription';
+    return kind === 'OperationDefinition' && operation === 'subscription';
   },
   wsLink,
   httpLink

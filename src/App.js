@@ -9,7 +9,7 @@ import './App.css';
 
 class App extends Component {
   state = {
-    from: 'anonymous',
+    from: 'Nathan',
     content: ''
   };
 
@@ -28,6 +28,7 @@ class App extends Component {
       await this.props.createChatMutation({
         variables: { content, from }
       });
+      this.setState({ content: '' });
     }
   };
 
@@ -46,7 +47,10 @@ class App extends Component {
         }
       `,
       updateQuery: (previous, { subscriptionData }) => {
-        const newChatLinks = [...previous.allChats, subscriptionData.data.node];
+        const newChatLinks = [
+          ...previous.allChats,
+          subscriptionData.data.Chat.node
+        ];
         const result = {
           ...previous,
           allChats: newChatLinks
